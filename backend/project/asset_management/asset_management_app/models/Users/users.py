@@ -1,7 +1,7 @@
 from django.db import models
 
 from asset_management_app.enums import UserTypeEnum, UserStatusEnum
-from asset_management_app.models.organization import Organization
+from asset_management_app.models.Users.organization import Organization
 
 
 class Users(models.Model):

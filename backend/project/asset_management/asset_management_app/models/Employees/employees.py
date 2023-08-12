@@ -1,10 +1,12 @@
 from django.db import models
 
 from asset_management_app.enums import UserTypeEnum, UserStatusEnum
-from asset_management_app.models.Users.organization import Organization
+from ..core import BaseModel
+from asset_management_app.models.Employees.organization import Organization
+from asset_management_app.models.core.mixins import SoftDeleteModelMixin
 
 
-class Users(models.Model):
+class Employees(BaseModel,SoftDeleteModelMixin):
 
     emp_id = models.CharField(max_length=20, unique=True)
     email = models.EmailField(max_length=100)

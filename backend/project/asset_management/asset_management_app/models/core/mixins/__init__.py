@@ -1,0 +1,1 @@
+from .soft_delete_model_mixin import SoftDeleteModelMixin

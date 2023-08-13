@@ -1,12 +1,14 @@
 import graphene
 from asset_management_app.views.Graphql.Sample.sample_query import SampleQuery
 from .Auth import schema as AuthSchema
-class Mutation(AuthSchema.Mutation):
+from .asset import schema as AssetMutations
+
+
+class Mutation(AuthSchema.Mutations, AssetMutations.Mutations):
     """
     All the Mutation in view will be inherited here.
     """
     pass
-
 
 
 class Query(SampleQuery):

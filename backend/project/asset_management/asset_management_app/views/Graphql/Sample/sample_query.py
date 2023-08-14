@@ -1,4 +1,5 @@
 import graphene
+from graphql import GraphQLError
 
 
 class SampleQueryResult(graphene.ObjectType):
@@ -8,9 +9,11 @@ class SampleQueryResult(graphene.ObjectType):
 class SampleQueryResolver:
 
     @staticmethod
-    def resolve(parent,info,name):
-        print(parent,info)
-        return SampleQueryResult(message=f'Hello {name} !!!!')
+    def resolve(parent, info, name):
+        request = info.context
+        if hasattr(request, 'access_token_payload'):
+            return SampleQueryResult(message=f'Hello {name} !!!!')
+        raise GraphQLError(message="Anonymous user")
 
 
 class SampleQuery(graphene.ObjectType):

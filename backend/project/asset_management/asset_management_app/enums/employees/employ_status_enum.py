@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class UserStatusEnum(Enum):
+class EmployStatusEnum(Enum):
 
     ACTIVE = 'Active'
     ON_LEAVE = 'On Leave'

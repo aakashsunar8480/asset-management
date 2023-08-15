@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class UserTypeEnum(Enum):
+class EmployTypeEnum(Enum):
 
     EMPLOYED = "Employed"
     CONTRACTOR = "Contractor"

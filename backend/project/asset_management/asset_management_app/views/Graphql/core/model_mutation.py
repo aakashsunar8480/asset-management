@@ -69,8 +69,6 @@ class ModelMutation(graphene.Mutation):
 
     @classmethod
     def mutate(cls, root, info, **data):
-        import pdb
-        pdb.set_trace()
         try:
             model = cls.get_model()
             instance = cls._clean_input(model, **data.get("input"))

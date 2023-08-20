@@ -17,7 +17,6 @@ class ModelMutationOptions(MutationOptions):
 
 
 class ModelMutation(graphene.Mutation):
-
     class Meta:
         abstract = True
 
@@ -29,7 +28,7 @@ class ModelMutation(graphene.Mutation):
         exclude=None,
         arguments=None,
         **options,
-    ) :
+    ):
         """Initialize the model mutation with meta information."""
         if not model:
             raise Exception("model not found.")
@@ -44,7 +43,9 @@ class ModelMutation(graphene.Mutation):
         _meta.model = model
         _meta.return_field_name = return_field_name
         _meta.exclude = exclude
-        super().__init_subclass_with_meta__(description="description", _meta=_meta, **options)
+        super().__init_subclass_with_meta__(
+            description="description", _meta=_meta, **options
+        )
 
     @classmethod
     def get_model(cls):
@@ -55,7 +56,7 @@ class ModelMutation(graphene.Mutation):
         instance.save()
 
     @classmethod
-    def _clean_input(cls,model,**data):
+    def _clean_input(cls, model, **data):
         instance = model(**data)
         return instance
 
@@ -64,7 +65,7 @@ class ModelMutation(graphene.Mutation):
         pass
 
     @classmethod
-    def _get_result(cls,instance):
+    def _get_result(cls, instance):
         return cls(instance)
 
     @classmethod

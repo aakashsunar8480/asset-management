@@ -1,7 +1,8 @@
 import graphene
 from django.contrib.auth.models import User
-from ..types.user_type import UserType
 from graphql import GraphQLError
+
+from ..types.user_type import UserType
 
 
 class CreateUser(graphene.Mutation):
@@ -15,8 +16,10 @@ class CreateUser(graphene.Mutation):
     @classmethod
     def mutate(cls, root, info, username, email, password):
         request = info.context
-        if hasattr(request, 'access_token_payload'):
-            user = User.objects.create_user(username=username, email=email, password=password)
+        if hasattr(request, "access_token_payload"):
+            user = User.objects.create_user(
+                username=username, email=email, password=password
+            )
             user.save()
             return CreateUser(user=user)
         raise GraphQLError(message="Anonymous user")

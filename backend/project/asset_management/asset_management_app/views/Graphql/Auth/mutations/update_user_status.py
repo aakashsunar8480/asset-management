@@ -10,7 +10,7 @@ class UpdateUserStatus(graphene.Mutation):
 
     status_map = {
         UserStatusEnum.ACTIVE: (True, "activated"),
-        UserStatusEnum.INACTIVE: (False, "deactivated")
+        UserStatusEnum.INACTIVE: (False, "deactivated"),
     }
 
     class Arguments:
@@ -20,12 +20,16 @@ class UpdateUserStatus(graphene.Mutation):
     @classmethod
     def mutate(cls, root, info, username, status):
         request = info.context
-        if hasattr(request, 'access_token_payload'):
+        if hasattr(request, "access_token_payload"):
             user = User.objects.get(username=username)
             if user:
                 user_status, action = cls.status_map[status]
                 user.is_active = user_status
                 user.save()
-                return UpdateUserStatus(success=True, message=f"User {username} has been {action}.")
-            return UpdateUserStatus(success=False, message=f"User {username} not found.")
+                return UpdateUserStatus(
+                    success=True, message=f"User {username} has been {action}."
+                )
+            return UpdateUserStatus(
+                success=False, message=f"User {username} not found."
+            )
         raise GraphQLError(message="Anonymous user")

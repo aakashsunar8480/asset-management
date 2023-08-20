@@ -1,6 +1,12 @@
+from asset_management_app.models import (
+    Assets,
+    Category,
+    Employees,
+    Organization,
+    SubCategory,
+    Vendors,
+)
 from django.contrib import admin
-
-from asset_management_app.models import Assets, Category, SubCategory, Vendors, Employees, Organization
 
 # Register your models here.
 

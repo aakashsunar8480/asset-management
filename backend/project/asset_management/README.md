@@ -17,5 +17,3 @@ Welcome to My Django Project! This is a web application built with Django, a hig
     DB_NAME=asset_management
     DB_USER=your_username
     DB_PASSWORD= your_password
-
-

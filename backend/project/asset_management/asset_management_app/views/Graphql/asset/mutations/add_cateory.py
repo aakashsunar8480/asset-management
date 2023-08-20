@@ -1,8 +1,8 @@
 import graphene
-
-from ..types.category_type import CategoryType
 from asset_management_app.models.Assets import Category
+
 from ...core.model_mutation import ModelMutation
+from ..types.category_type import CategoryType
 
 
 class AddCategoryInput(graphene.InputObjectType):

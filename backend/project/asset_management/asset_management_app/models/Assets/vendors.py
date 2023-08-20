@@ -1,10 +1,10 @@
+from asset_management_app.models.core.mixins import SoftDeleteModelMixin
 from django.db import models
 
 from ..core import BaseModel
-from asset_management_app.models.core.mixins import SoftDeleteModelMixin
 
 
-class Vendors(BaseModel,SoftDeleteModelMixin):
+class Vendors(BaseModel, SoftDeleteModelMixin):
 
     name = models.CharField(max_length=100)
     mobile = models.CharField(max_length=10)

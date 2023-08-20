@@ -1,6 +1,6 @@
 import graphene
-from graphql_jwt.shortcuts import  get_token, get_refresh_token
 from graphql import GraphQLError
+from graphql_jwt.shortcuts import get_refresh_token, get_token
 
 
 class AccessTokenByRefreshToken(graphene.Mutation):
@@ -17,4 +17,3 @@ class AccessTokenByRefreshToken(graphene.Mutation):
             return AccessTokenByRefreshToken(access_token=access_token)
         else:
             raise GraphQLError(message="Invalid refresh token")
-

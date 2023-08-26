@@ -1,3 +1,6 @@
+"""LoginUser mutation."""
+from typing import Any
+
 import graphene
 from django.contrib.auth import authenticate
 from graphql import GraphQLError
@@ -8,14 +11,19 @@ from ..types.login_user_type import LoginUserType
 
 
 class LoginUser(graphene.Mutation):
+    """LoginUser mutation."""
+
     login_user = graphene.Field(LoginUserType)
 
     class Arguments:
+        """LoginUser Arguments."""
+
         username = graphene.String(required=True)
         password = graphene.String(required=True)
 
     @classmethod
-    def mutate(cls, root, info, username, password):
+    def mutate(cls: Any, root: Any, info: Any, username: str, password: str) -> Any:
+        """Mutate method for LoginUser."""
         user = authenticate(username=username, password=password)
         if user:
             access_token = get_token(user)

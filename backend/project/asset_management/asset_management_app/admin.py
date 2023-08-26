@@ -1,3 +1,4 @@
+"""Registered models for admin."""
 from asset_management_app.models import (
     Assets,
     Category,

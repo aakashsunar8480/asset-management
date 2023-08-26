@@ -1,3 +1,4 @@
+"""Urls for asset_management_app."""
 from asset_management_app.views.Graphql import api
 from django.urls import path
 from django.views.decorators.csrf import csrf_exempt

@@ -1,3 +1,6 @@
+"""UpdateUserStatus mutation."""
+from typing import Any
+
 import graphene
 from asset_management_app.enums.users.user_status_enum import UserStatusEnum
 from django.contrib.auth.models import User
@@ -5,6 +8,8 @@ from graphql import GraphQLError
 
 
 class UpdateUserStatus(graphene.Mutation):
+    """UpdateUserStatus mutation."""
+
     success = graphene.Boolean()
     message = graphene.String()
 
@@ -14,11 +19,16 @@ class UpdateUserStatus(graphene.Mutation):
     }
 
     class Arguments:
+        """UpdateUserStatus Arguments."""
+
         username = graphene.String(required=True)
         status = graphene.Argument(UserStatusEnum, required=True)
 
     @classmethod
-    def mutate(cls, root, info, username, status):
+    def mutate(
+        cls: Any, root: Any, info: Any, username: str, status: UserStatusEnum
+    ) -> Any:
+        """Mutate method for UpdateUserStatus."""
         request = info.context
         if hasattr(request, "access_token_payload"):
             user = User.objects.get(username=username)

@@ -1,2 +1,3 @@
-from .asset_status import AssetStatusEnum
-from .warranty_type import WarrantyTypeEnum
+"""Enums related to asset model."""
+from .asset_status import AssetStatusEnum  # noqa
+from .warranty_type import WarrantyTypeEnum  # noqa

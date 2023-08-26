@@ -1,8 +1,11 @@
+"""ModelMutation."""
+from typing import Any
+
 import graphene
 from graphene.types.mutation import MutationOptions
 
 
-def get_model_name(model):
+def get_model_name(model: Any) -> Any:
     """Return name of the model with first letter lowercase."""
     model_name = model.__name__
     return model_name[:1].lower() + model_name[1:]
@@ -17,18 +20,22 @@ class ModelMutationOptions(MutationOptions):
 
 
 class ModelMutation(graphene.Mutation):
+    """ModelMutation."""
+
     class Meta:
+        """ModelMutation meta."""
+
         abstract = True
 
     @classmethod
     def __init_subclass_with_meta__(
-        cls,
-        model=None,
-        model_type=None,
-        exclude=None,
-        arguments=None,
-        **options,
-    ):
+        cls: Any,
+        model: Any = None,
+        model_type: Any = None,
+        exclude: Any = None,
+        arguments: Any = None,
+        **options: dict,
+    ) -> Any:
         """Initialize the model mutation with meta information."""
         if not model:
             raise Exception("model not found.")
@@ -48,28 +55,34 @@ class ModelMutation(graphene.Mutation):
         )
 
     @classmethod
-    def get_model(cls):
+    def get_model(cls: Any) -> Any:
+        """Model for meta."""
         return cls._meta.model
 
     @classmethod
-    def _save(cls, instance):
+    def _save(cls: Any, instance: Any) -> Any:
+        """Instance save action."""
         instance.save()
 
     @classmethod
-    def _clean_input(cls, model, **data):
+    def _clean_input(cls: Any, model: Any, **data: dict) -> Any:
+        """Input formatting and instance creation."""
         instance = model(**data)
         return instance
 
     @classmethod
-    def _post_save(cls):
+    def _post_save(cls: Any) -> None:
+        """Post save action."""
         pass
 
     @classmethod
-    def _get_result(cls, instance):
+    def _get_result(cls: Any, instance: Any) -> Any:
+        """Mutation class."""
         return cls(instance)
 
     @classmethod
-    def mutate(cls, root, info, **data):
+    def mutate(cls: Any, root: Any, info: Any, **data: dict) -> Any:
+        """Mutate method."""
         try:
             model = cls.get_model()
             instance = cls._clean_input(model, **data.get("input"))

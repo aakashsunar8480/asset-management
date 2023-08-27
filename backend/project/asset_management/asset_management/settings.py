@@ -74,8 +74,8 @@ AUTHENTICATION_BACKENDS = [
 
 GRAPHQL_JWT = {
     "JWT_VERIFY_EXPIRATION": True,
-    "JWT_EXPIRATION_DELTA": datetime.timedelta(minutes=5),
-    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=7),
+    "JWT_EXPIRATION_DELTA": datetime.timedelta(minutes=30),
+    "JWT_REFRESH_EXPIRATION_DELTA": datetime.timedelta(days=2),
 }
 ROOT_URLCONF = "asset_management.urls"
 

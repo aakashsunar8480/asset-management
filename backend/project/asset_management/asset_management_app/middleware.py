@@ -6,6 +6,8 @@ from django.http import HttpRequest
 from graphql import GraphQLError
 from graphql_jwt.utils import jwt_decode
 
+ALLOWED_MUTATION = ["loginUser", "createUser"]
+
 
 class VerifyAccessTokenMiddleware:
     """Authenticates access token."""
@@ -26,3 +28,21 @@ class VerifyAccessTokenMiddleware:
             except Exception as error:
                 raise GraphQLError(f"Anonymous user :-{error}")
         return self.get_response(request)
+
+
+class AuthenticationMiddleware:
+    """Authentication middleware for all graphql operations."""
+
+    @staticmethod
+    def resolve(next: Callable, root: Any, info: Any, **kwargs: dict) -> Callable:
+        """Authenticate user and allowed mutations."""
+        context = info.context
+        if not hasattr(context, "access_token_payload"):
+            if info.operation.operation.value == "mutation":
+                for selection in info.operation.selection_set.selections:
+                    selection_name = str(selection.name.value)
+                    if selection_name not in ALLOWED_MUTATION:
+                        raise GraphQLError(f"Permission denied for:-{selection_name}")
+            else:
+                raise GraphQLError("Permission denied for query")
+        return next(root, info, **kwargs)

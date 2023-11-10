@@ -64,6 +64,7 @@ MIDDLEWARE = [
 GRAPHENE = {
     "MIDDLEWARE": [
         "graphql_jwt.middleware.JSONWebTokenMiddleware",
+        "asset_management_app.middleware.AuthenticationMiddleware",
     ],
 }
 

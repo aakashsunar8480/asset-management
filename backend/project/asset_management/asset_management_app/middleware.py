@@ -2,11 +2,20 @@
 
 from typing import Any, Callable
 
-from django.http import HttpRequest
+from django.http import HttpRequest, JsonResponse
 from graphql import GraphQLError
 from graphql_jwt.utils import jwt_decode
 
-ALLOWED_MUTATION = ["loginUser", "createUser"]
+ALLOWED_OPERATIONS = {
+    "mutation": ["loginUser", "createUser"],
+    "query": ["__schema", None],
+}
+
+
+def check_authentication(selection_name: Any, allowed_operation: list) -> None:
+    """Check allowed operations."""
+    if selection_name not in allowed_operation:
+        raise GraphQLError(f"Permission denied for:-{selection_name}")
 
 
 class VerifyAccessTokenMiddleware:
@@ -25,8 +34,15 @@ class VerifyAccessTokenMiddleware:
                 decoded_payload = jwt_decode(access_token)
                 # Attach the decoded payload to the request
                 request.access_token_payload = decoded_payload
-            except Exception as error:
-                raise GraphQLError(f"Anonymous user :-{error}")
+            except Exception:
+                return JsonResponse(
+                    {
+                        "error": {
+                            "message": "Access token expired or invalid.",
+                            "code": "401",
+                        }
+                    }
+                )
         return self.get_response(request)
 
 
@@ -38,11 +54,10 @@ class AuthenticationMiddleware:
         """Authenticate user and allowed mutations."""
         context = info.context
         if not hasattr(context, "access_token_payload"):
-            if info.operation.operation.value == "mutation":
-                for selection in info.operation.selection_set.selections:
-                    selection_name = str(selection.name.value)
-                    if selection_name not in ALLOWED_MUTATION:
-                        raise GraphQLError(f"Permission denied for:-{selection_name}")
-            else:
-                raise GraphQLError("Permission denied for query")
+            for selection in info.operation.selection_set.selections:
+                selection_name = str(selection.name.value)
+                check_authentication(
+                    selection_name,
+                    ALLOWED_OPERATIONS.get(info.operation.operation.value),
+                )
         return next(root, info, **kwargs)

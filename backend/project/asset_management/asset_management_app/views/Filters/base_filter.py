@@ -9,11 +9,19 @@ from asset_management_app.views.Filters.asset.subcategory_filter import (
 from django.db.models import Q
 from graphql import GraphQLError
 
+from .employee.employee_filter import EmployeeFilter
+from .employee.organization_filter import OrganizationFilter
+
 
 class BaseFilters:
     """Base filters."""
 
-    CRITERIA_MAP = {"asset": AssetFilter, "subcategory": SubcategoryFilter}
+    CRITERIA_MAP = {
+        "asset": AssetFilter,
+        "subcategory": SubcategoryFilter,
+        "employee": EmployeeFilter,
+        "organization": OrganizationFilter,
+    }
 
     @classmethod
     def get_criteria_result(cls: Any, criteria: dict) -> Any:
@@ -26,7 +34,6 @@ class BaseFilters:
                 ].build_filter_from_criteria(criteria[key])
 
             result = Assets.objects.filter(custom_filter)
-
             return result
         except Exception as e:
             raise GraphQLError(message=f"Invalid key./n {e}")

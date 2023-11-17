@@ -65,8 +65,9 @@ class ModelMutation(graphene.Mutation):
         instance.save()
 
     @classmethod
-    def _clean_input(cls: Any, model: Any, **data: dict) -> Any:
+    def _clean_input(cls: Any, **data: dict) -> Any:
         """Input formatting and instance creation."""
+        model = cls.get_model()
         instance = model(**data)
         return instance
 
@@ -84,8 +85,7 @@ class ModelMutation(graphene.Mutation):
     def mutate(cls: Any, root: Any, info: Any, **data: dict) -> Any:
         """Mutate method."""
         try:
-            model = cls.get_model()
-            instance = cls._clean_input(model, **data.get("input"))
+            instance = cls._clean_input(**data.get("input"))
             cls._save(instance)
             cls._post_save()
             success_response = cls._get_result(instance)

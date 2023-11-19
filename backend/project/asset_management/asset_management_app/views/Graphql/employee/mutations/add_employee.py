@@ -2,9 +2,9 @@
 from typing import Any
 
 import graphene
-from asset_management_app.models.Employees import Organization,Employees
-from ...core.enums import UserTypeEnum,UserStatusEnum
+from asset_management_app.models.Employees import Employees, Organization
 
+from ...core.enums import UserStatusEnum, UserTypeEnum
 from ...core.model_mutation import ModelMutation
 from ..types.employee import EmployeeType
 
@@ -16,9 +16,15 @@ class AddEmployeeInput(graphene.InputObjectType):
     emp_id = graphene.String(required=True, description="ID of the Employee")
     email = graphene.String(required=False, description="Email of the Employee")
     mobile = graphene.String(required=False, description="Mobile of the Employee")
-    organization = graphene.String(required=False, description="Organization ID of the Employee")
-    user_type = graphene.Field(UserTypeEnum, required=True, description="User type of the Employee")
-    status = graphene.Field(UserStatusEnum, required=True, description="Status of the Employee")
+    organization = graphene.String(
+        required=False, description="Organization ID of the Employee"
+    )
+    user_type = graphene.Field(
+        UserTypeEnum, required=True, description="User type of the Employee"
+    )
+    status = graphene.Field(
+        UserStatusEnum, required=True, description="Status of the Employee"
+    )
 
 
 class AddEmployee(ModelMutation):
@@ -39,7 +45,6 @@ class AddEmployee(ModelMutation):
     @classmethod
     def _clean_input(cls: Any, **data: dict) -> Any:
         """Input formatting and instance creation."""
-        import pdb;pdb.set_trace()
         model = cls.get_model()
         data["organization"] = Organization.objects.get(id=data.get("organization"))
         instance = model(**data)
